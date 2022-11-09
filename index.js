@@ -27,33 +27,45 @@ async function run() {
         })
 
         app.get('/services', async (req, res) => {
-            const quary = {};
-            const cursor = serviceCollection.find(quary);
+            const query = {};
+            const cursor = serviceCollection.find(query);
             const result = await cursor.limit(3).toArray()
             res.send(result)
         })
         app.get('/allservices', async (req, res) => {
-            const quary = {};
-            const cursor = serviceCollection.find(quary);
+            const query = {};
+            const cursor = serviceCollection.find(query);
             const result = await cursor.toArray()
             res.send(result)
         })
 
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
-            const quary = { _id: ObjectId(id) }
-            const result = await serviceCollection.findOne(quary)
+            const query = { _id: ObjectId(id) }
+            const result = await serviceCollection.findOne(query)
             res.send(result)
         })
 
 
         // review Collection data
         app.get('/reviews', async (req, res) => {
-            console.log(req.query.serviceId)
-            let quary = {};
+            let review = {};
             if (req.query.serviceId) {
-                quary = {
+                review = {
                     serviceId: req.query.serviceId
+                }
+            }
+            const cursor = reviewCollection.find(review);
+            const result = await cursor.toArray()
+            res.send(result);
+        })
+
+
+        app.get('/myreviews', async (req, res) => {
+            let quary = {};
+            if (req.query.email) {
+                quary = {
+                    email: req.query.email
                 }
             }
             const cursor = reviewCollection.find(quary);
