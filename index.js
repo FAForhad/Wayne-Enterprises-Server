@@ -82,6 +82,8 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result);
         })
+
+
         app.post('/reviews', async (req, res) => {
             const reviews = req.body;
             const result = await reviewCollection.insertOne(reviews)
@@ -112,6 +114,24 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await reviewCollection.deleteOne(query);
             res.send(result)
+        })
+
+
+        // edit review
+        app.put('/myreviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const status = req.body.status
+            console.log(status)
+            const query = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    description: status
+                }
+            }
+            const result = await reviewCollection.updateOne(query, updatedDoc, options);
+            res.send(result)
+
         })
     }
     finally {
