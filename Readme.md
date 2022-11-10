@@ -20,5 +20,3 @@ For loaded data in client site we have to use server side
 - mongodb
 - dotenv
 - jsonwebtoken
-
-I have installed 
